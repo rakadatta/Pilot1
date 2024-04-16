@@ -1,0 +1,121 @@
+Experiments:
+  exp1:
+    premium: [0.25]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+  exp2:
+    premium: [0.50]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+  #change values later and do this for 20
+  exp3:
+    premium: [0.75]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+
+  exp 4:
+    premium: [0.10]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 5:
+    premium: [1.25]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 6:
+    premium: [1.50]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 7:
+    premium: [1.75]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 8:
+    premium: [2.00]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 9:
+    premium: [2.25]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 10:
+    premium: [2.50]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 11:
+    premium: [2.75]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 12:
+    premium: [3.00]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 13:
+    premium: [3.25]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 14:
+    premium: [3.50]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 15:
+    premium: [3.75]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 16:
+    premium: [4.00]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 17:
+    premium: [4.25]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 18:
+    premium: [4.50]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 19:
+    premium: [4.75]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+  exp 20:
+    premium: [5.00]
+    initial_earning: [20]
+    loss: [15]
+    loss_prob: [0.1]
+    
+

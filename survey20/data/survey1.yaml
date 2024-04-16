@@ -74,7 +74,7 @@ Experiments:
     left_probs: [0, 0, 0, 1]
     right_probs: [0, 0.6, 0.25, 0.15]
     left_rewards: [0, 0, 0, 37]
-    right_rewards: [0, 18	, 55, 88]
+    right_rewards: [0, 18, 55, 88]
     
   exp 14:
     left_probs: [0, 0, 0.55, 0.45]
