@@ -11,12 +11,111 @@ Experiments:
     right_rewards: [0,0,25,33]
   #change values later and do this for 20
   exp3:
-    left_probs: [0,0,0,1]
-    right_probs: [0,0,0.25,0.75]
-    left_rewards: [0,0,0,52]
-    right_rewards: [0,0,24,64]
-  exp4:
-    left_probs: [0.5,0.05,0.4,0.05]
-    right_probs: [0,0,0.4,0.6]
-    left_rewards: [0,30,61,94]
-    right_rewards: [0,0,25,33]
+    left_probs: [0.45, 0.1, 0.15, 0.3]
+    right_probs: [0.7, 0.1, 0.15, 0.05]
+    left_rewards: [5, 31, 42, 49]
+    right_rewards: [14, 58, 70, 79]
+
+  exp 4:
+    left_probs: [0.15, 0.2, 0.15, 0.5]
+    right_probs: [0, 0.75, 0.2, 0.05]
+    left_rewards: [25, 36, 48, 84]
+    right_rewards: [0, 54, 70, 76]
+    
+  exp 5:
+    left_probs: [0.3, 0.1, 0.5, 0.1]
+    right_probs: [0.3, 0.1, 0.3, 0.3]
+    left_rewards: [2, 70, 71, 90]
+    right_rewards: [7, 19, 55, 91]
+    
+  exp 6:
+    left_probs: [0, 0.3, 0.45, 0.25]
+    right_probs: [0, 0, 0, 1]
+    left_rewards: [0, 3, 28, 33]
+    right_rewards: [0, 0, 0, 17]
+    
+  exp 7:
+    left_probs: [0.3, 0.6, 0.05, 0.05]
+    right_probs: [0, 0, 0, 1]
+    left_rewards: [18, 43, 54, 76]
+    right_rewards: [0, 0, 0, 36]
+    
+  exp 8:
+    left_probs: [0, 0, 0.1, 0.9]
+    right_probs: [0, 0, 0.55, 0.45]
+    left_rewards: [0, 0, 22, 66]
+    right_rewards: [0, 0, 52, 72]
+    
+  exp 9:
+    left_probs: [0, 0, 0, 1]
+    right_probs: [0.2, 0.2, 0.45, 0.15]
+    left_rewards: [0, 0, 0, 54]
+    right_rewards: [1, 15, 85, 91]
+    
+  exp 10:
+    left_probs: [0.45, 0.1, 0.05, 0.4]
+    right_probs: [0, 0, 0.9, 0.1]
+    left_rewards: [9, 12, 36, 57]
+    right_rewards: [0, 0, 27, 74]
+    
+  exp 11:
+    left_probs: [0, 0.4, 0.05, 0.55]
+    right_probs: [0, 0.3, 0.55, 0.15]
+    left_rewards: [0, 8, 20, 94]
+    right_rewards: [0, 3, 8, 4]
+    
+  exp 12:
+    left_probs: [0, 0.2, 0.6, 0.2]
+    right_probs: [0.25, 0.05, 0.25, 0.45]
+    left_rewards: [0, 34, 48, 99]
+    right_rewards: [12, 13, 43, 94]
+    
+  exp 13:
+    left_probs: [0, 0, 0, 1]
+    right_probs: [0, 0.6, 0.25, 0.15]
+    left_rewards: [0, 0, 0, 37]
+    right_rewards: [0, 18	, 55, 88]
+    
+  exp 14:
+    left_probs: [0, 0, 0.55, 0.45]
+    right_probs: [0.15, 0.05, 0.25, 0.55]
+    left_rewards: [0, 0, 13, 99]
+    right_rewards: [30, 31, 49, 52]
+    
+  exp 15:
+    left_probs: [0.15, 0.25, 0.55, 0.05]
+    right_probs: [0, 0, 0, 1]
+    left_rewards: [47, 71, 75, 91]
+    right_rewards: [0, 0, 0, 70]
+    
+  exp 16:
+    left_probs: [0.1, 0.75, 0.1, 0.05]
+    right_probs: [0, 0, 0.7, 0.3]
+    left_rewards: [11, 47, 59, 81]
+    right_rewards: [0, 0, 38, 62]
+    
+  exp 17:
+    left_probs: [0, 0, 0, 1]
+    right_probs: [0.1, 0.1, 0.65, 0.15]
+    left_rewards: [0, 0, 0, 62]
+    right_rewards: [27, 56, 71, 82]
+    
+  exp 18:
+    left_probs: [0, 0.15, 0.05, 0.8]
+    right_probs: [0.3, 0.1, 0.55, 0.05]
+    left_rewards: [0, 8, 24, 60]
+    right_rewards: [33, 42, 53, 93]
+    
+  exp 19:
+    left_probs: [0, 0.3, 0.25, 0.45]
+    right_probs: [0, 0.1, 0.25, 0.65]
+    left_rewards: [0, 5, 9, 79]
+    right_rewards: [83, 0, 49, 62]
+    
+  exp 20:
+    left_probs: [0.55, 0.05, 0.1, 0.3]
+    right_probs: [0, 0, 0.95, 0.05]
+    left_rewards: [9, 26, 69, 100]
+    right_rewards: [0, 0, 36, 84]
+    
+
