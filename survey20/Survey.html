@@ -1,0 +1,195 @@
+{{ block title }}Survey{{ endblock }}
+{{ block content }}
+<!-- <div style="background-color: #808080; padding: 20px;"> -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<p>&nbsp;</p>
+<figure class="table" style="width:100%;">
+    <table class="ck-table-resized">
+        <colgroup>
+             <col style="width:43.77%;">
+            <col style="width:10.53%;">
+            <col style="width:45.7%;">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>
+                    <figure class="highcharts-figure" style="display: block">
+                        <div id="container_left"></div>
+                      </figure>
+                    <p>&nbsp;</p>
+                </td>
+                <td>&nbsp;</td>
+                <td>
+                    <figure class="highcharts-figure" style="display: block">
+                        <div id="container_right"></div>
+                      </figure>
+                    <p>&nbsp;</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="text-align:center;"> <span id="left_text_1" style="color: blue"></span> </p>
+                    <p style="text-align:center;"> <span id="left_text_2" style="color: blue"></span> </p>
+                    <p style="text-align:center;"> <span id="left_text_3" style="color: blue"></span> </p>
+                    <p style="text-align:center;"> <span id="left_text_4" style="color: blue"></span> </p>
+                </td>
+                <td>&nbsp;</td>
+                <td>
+                    <p style="text-align:center;"> <span id="right_text_1" style="color: blue"></span> </p>
+                    <p style="text-align:center;"> <span id="right_text_2" style="color: blue"></span> </p>
+                    <p style="text-align:center;"> <span id="right_text_3" style="color: blue"></span> </p>
+                    <p style="text-align:center;"> <span id="right_text_4" style="color: blue"></span> </p>
+                </td>
+            </tr>
+                <tr>
+                    <td><button type="button" id="left"
+                    onclick="sendResultAndUpdate(this)" value="left">Select Left</button>
+                    </td>
+                     <td>&nbsp;</td>
+                    <td><button type="button" onclick="sendResultAndUpdate(this)"
+                    id="right" value="right">Select Right</button>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+</figure>
+<p>The reward for the previous question was: <span id="prev_reward" style="color: blue">{{player.prev_reward}}$</span> </p>
+
+<script>
+    function sendResultAndUpdate(_button){
+        liveSend(_button.id);
+    }
+    function liveRecv(data){
+        let is_done = data["is_done"];
+        let exp_data = data["exp_data"];
+        console.log(exp_data)
+        document.getElementById("prev_reward").innerHTML = data["prev_reward"] + "$";
+        if (is_done ==='game_finished') {
+            document.getElementById("form").submit();
+        }
+        colors = ["#FE6A35", "#00E272","#2CAFFE","#544FC5"] //change colors
+        redrawChart(exp_data["pieleft"],exp_data["pieright"])
+        console.log()
+        for (let i = 0; i < 4; i++) {
+            console.log(data_field_right["y"])
+            //for now hardcode to max 4 elemetns
+            let variable_left = document.getElementById("left_text_" + i);
+            let data_field_left = data["pieleft"][i];
+            let string_field_left = "";
+            if (parseFloat(data_field_left["y"]) != 0){//maybe parse 
+                string_field_left = "Chance of winnning" + data_field_left["name"] + "is" +
+                    data_field_left["y"];
+                variable_left.innerHTML = string_field_left;
+                variable_left.style.color = colors[i];
+            }
+            let variable_right = document.getElementById("right_text_" + i);
+            let data_field_right = data["pieright"][i];
+            let string_field_right = "";
+            if (parseFloat(data_field_right["y"]) != 0){//maybe parse 
+                string_field_right = "Chance of winnning" + data_field_right["name"] + "is" +
+                    data_field_right["y"];
+                variable_right.innerHTML = string_field_right;
+                variable_right.style.color = colors[i];
+            }
+        }
+    }
+
+    function setMessageAndColor(id, message, color) {
+        const spanElement = document.getElementById(id);
+        if (spanElement) {
+            spanElement.textContent = message;
+            spanElement.style.color = color;
+        }
+    }
+
+    function redrawChart(data_left, data_right) {
+    // Build the chart left
+        Highcharts.chart('container_left', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Left',
+                align: 'center'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        distance: 0,
+                        formatter: function(){
+                            if (this.y > 0) {
+                              return this.point.name;
+                            }
+                        },
+                        connectorColor: 'rgba(128,128,128,0.5)',
+                    }
+                }
+            },
+            series: [{
+                name: 'Reward Probability',
+                data: JSON.parse(data_left)
+            }]
+        });
+
+        // Build the chart right
+        Highcharts.chart('container_right',  {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Right',
+                align: 'center'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        distance: 0,
+                        formatter: function(){
+                            if (this.y > 0) {
+                              return this.point.name;
+                            }
+                        },
+                        connectorColor: 'rgba(128,128,128,0.5)',
+                    }
+                }
+            },
+            series: [{
+                name: 'Reward Probability',
+                data: JSON.parse(data_right)
+            }]
+        });
+    }
+</script>
+
+{{ endblock }}

@@ -1,0 +1,22 @@
+Experiments:
+  exp1:
+    left_probs: [0,0,0,1]
+    right_probs: [0,0,0.25,0.75]
+    left_rewards: [0,0,0,52]
+    right_rewards: [0,0,24,64]
+  exp2:
+    left_probs: [0.5,0.05,0.4,0.05]
+    right_probs: [0,0,0.4,0.6]
+    left_rewards: [0,30,61,94]
+    right_rewards: [0,0,25,33]
+  #change values later and do this for 20
+  exp3:
+    left_probs: [0,0,0,1]
+    right_probs: [0,0,0.25,0.75]
+    left_rewards: [0,0,0,52]
+    right_rewards: [0,0,24,64]
+  exp4:
+    left_probs: [0.5,0.05,0.4,0.05]
+    right_probs: [0,0,0.4,0.6]
+    left_rewards: [0,30,61,94]
+    right_rewards: [0,0,25,33]

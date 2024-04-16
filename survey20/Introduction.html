@@ -1,0 +1,12 @@
+{{ block title }}Introduction{{ endblock }}
+{{ block content }}
+
+    {{ include_sibling 'instructions.html' }}
+
+    <p>
+        Please answer the following questions.
+    </p>
+    {{ formfields }}
+    {{ next_button }}
+
+{{ endblock }}

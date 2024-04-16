@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "html-beautify": "^1.0.4"
+  }
+}
