@@ -1,18 +1,15 @@
 import json
 import os
 import random
+from typing import List
+
 import otree
 import yaml
 from otree.api import *
-from typing import List
 
 doc = """
-In a common value auction game, players simultaneously bid on the item being
-auctioned.<br/>
-Prior to bidding, they are given an estimate of the actual value of the item.
-This actual value is revealed after the bidding.<br/>
-Bids are private. The player with the highest bid wins the auction, but
-payoff depends on the bid amount and the actual value.<br/>
+TODO: add description here
+this is a survey
 """
 
 
@@ -40,6 +37,11 @@ class Group(BaseGroup):
     pass
 
 
+#  def make_experiment_data(exp_name,result_name,clicked_name):
+#  exp_name = models.StringField()
+#  result_name = models.CurrencyField(initial=0)
+
+
 class Player(BasePlayer):
     name = models.StringField(label="Please enter your name")
     age = models.IntegerField(label="What is your age?", min=13, max=125)
@@ -48,11 +50,23 @@ class Player(BasePlayer):
     num_messages = models.IntegerField(initial=0)
     game_finished = models.BooleanField()
 
+    ##to log the data
+
+
+class Survey1(ExtraModel):
+    player = models.Link(Player)
+    experiment_name = models.StringField()
+    result_probabilty = models.FloatField()
+    option_choosen = models.StringField()
+
 
 # PAGES
 class Introduction(Page):
-    form_model = "player"
-    form_fields = ["name", "age"]
+    pass
+
+
+class Introduction2(Page):
+    pass
 
 
 def pick_with_a_probabilty(probabilities: List, rewards: List):
@@ -80,20 +94,26 @@ def reward_gained(experiment_id, key):
 
 # TODO: maybe move to initial one
 dat_filename = os.path.dirname(__file__) + "/data/survey1.yaml"
+dat2_filename = os.path.dirname(__file__) + "/data/survey2.yaml"
 experiments_data = parse_yaml(dat_filename)
+experiments_data2 = parse_yaml(dat2_filename)
 max_num_messages = len(experiments_data)
-num_messages = 0
+max_num_messages2 = len(experiments_data)
 all_experimanent_names = [exp for exp in experiments_data]
+all_experimanent_names2 = [exp for exp in experiments_data2]
+# to eandomize the Experiments
+random.shuffle(all_experimanent_names)
+random.shuffle(all_experimanent_names2)
 
 
 def get_next_experiment(signle_exp_data):
     data_left = []
     data_right = []
     for i in zip(signle_exp_data["left_rewards"], signle_exp_data["left_probs"]):
-        data_left.append({"name": str(i[0])+"$", "y": i[1]})
+        data_left.append({"name": "$" + str(i[0]), "y": i[1]})
 
     for i in zip(signle_exp_data["right_rewards"], signle_exp_data["right_probs"]):
-        data_right.append({"name": str(i[0])+"$", "y": i[1]})
+        data_right.append({"name": "$" + str(i[0]), "y": i[1]})
 
     print([{"name": "name", "data": data_left}])
 
@@ -103,47 +123,140 @@ def get_next_experiment(signle_exp_data):
     )
 
 
+def get_next_experiment2(signle_exp_data):
+    return dict(
+        premium=json.dumps(signle_exp_data["premium"]),
+        initial_earning=json.dumps(signle_exp_data["initial_earning"]),
+        loss=json.dumps(signle_exp_data["loss"]),
+        loss_prob=json.dumps(signle_exp_data["loss_prob"]),
+        loss_earning=json.dumps(signle_exp_data["final_earning"]),
+    )
+
+
 class Survey(Page):
     @staticmethod
     def live_method(player, data):
+        # we send empty at the beginning
+        if data == "load":
+            curr_experiment_data = get_next_experiment(experiments_data[all_experimanent_names[0]])
+            # we send empty at the beginning
+            return {
+                0: {
+                    "is_done": "not_game_finished",
+                    "exp_data": curr_experiment_data,
+                    "prev_reward": player.prev_reward,
+                    "option_selected": data,
+                }
+            }
+
         # the data recieved is either left button or right button
-        print("the data is", data, type(data))
         player.num_messages += 1
 
+        #  result_probabilty = models.FloatField()
+        #  option_choosen = models.StringField()
         try:
-            player.prev_reward = reward_gained(all_experimanent_names[player.num_messages - 1], key=data)
+            player.prev_reward = reward_gained(
+                all_experimanent_names[player.num_messages - 1], key=data
+            )
             player.accumulated_sum += player.prev_reward
+            # data logging
+            Survey1.create(
+                player=player,
+                experiment_name=all_experimanent_names[player.num_messages - 1],
+                result_probabilty=player.prev_reward,
+                option_choosen=data,
+            )
+
         except:
             pass
 
         if player.num_messages >= max_num_messages:
-            return {0: {"is_done": "game_finished", "prev_reward":player.prev_reward}}
+            return {
+                0: {
+                    "is_done": "game_finished",
+                    "prev_reward": player.prev_reward,
+                    "option_selected": data,
+                }
+            }
         else:
             player.game_finished = False
             print(player.num_messages)
             curr_experiment_data = get_next_experiment(
                 experiments_data[all_experimanent_names[player.num_messages]]
             )
-            return {0: {"is_done": "not_game_finished", "exp_data":
-                        curr_experiment_data, "prev_reward":player.prev_reward}}
+            return {
+                0: {
+                    "is_done": "not_game_finished",
+                    "exp_data": curr_experiment_data,
+                    "prev_reward": player.prev_reward,
+                    "option_selected": data,
+                }
+            }
+
+class Survey2(Page):
+    @staticmethod
+    def live_method(player, data):
+        # we send empty at the beginning
+        if data == "load":
+            curr_experiment_data = get_next_experiment(experiments_data[all_experimanent_names[0]])
+            # we send empty at the beginning
+            return {
+                0: {
+                    "is_done": "not_game_finished",
+                    "exp_data": curr_experiment_data,
+                    "prev_reward": player.prev_reward,
+                    "option_selected": data,
+                }
+            }
+
+        # the data recieved is either left button or right button
+        player.num_messages += 1
+
+        #  result_probabilty = models.FloatField()
+        #  option_choosen = models.StringField()
+        try:
+            player.prev_reward = reward_gained(
+                all_experimanent_names[player.num_messages - 1], key=data
+            )
+            player.accumulated_sum += player.prev_reward
+            # data logging
+            Survey1.create(
+                player=player,
+                experiment_name=all_experimanent_names[player.num_messages - 1],
+                result_probabilty=player.prev_reward,
+                option_choosen=data,
+            )
+
+        except:
+            pass
+
+        if player.num_messages >= max_num_messages:
+            return {
+                0: {
+                    "is_done": "game_finished",
+                    "prev_reward": player.prev_reward,
+                    "option_selected": data,
+                }
+            }
+        else:
+            player.game_finished = False
+            print(player.num_messages)
+            curr_experiment_data = get_next_experiment(
+                experiments_data[all_experimanent_names[player.num_messages]]
+            )
+            return {
+                0: {
+                    "is_done": "not_game_finished",
+                    "exp_data": curr_experiment_data,
+                    "prev_reward": player.prev_reward,
+                    "option_selected": data,
+                }
+            }
 
 
 class thanks(Page):
     form_model = "player"
-    #  player.accumulated_sum = sum(rewards)
     form_fileds = ["accumulated_sum"]
-
-    #  def vars_for_template(player: Player):
-        #  player.accumulated_sum = sum(player.rewards)
-        #  pass
-
-    #  return dict(is_greedy=group.item_value - player.bid_amount < 0)
-    # sum(rewards)
-    # TODO: maybe writre the survey results into a text file
-    #  @staticmethod
-    #  def before_next_page(player: Player, timeout_happened):
-    #  group = player.group
-    #  player.item_value_estimate = generate_value_estimate(group)
     pass
 
 
@@ -155,5 +268,5 @@ class thanks(Page):
 #  return dict(is_greedy=group.item_value - player.bid_amount < 0)
 
 
-#  page_sequence = [Introduction, Survey, thanks]
-page_sequence = [Survey, thanks]
+page_sequence = [Introduction, Survey, Introduction2, thanks]
+#  page_sequence = [Survey, thanks]

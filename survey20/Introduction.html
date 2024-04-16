@@ -1,12 +1,93 @@
 {{ block title }}Welcome!{{ endblock }}
 {{ block content }}
+<div class="card bg-light m-3">
+<div class="card-body">
 
-    {{ include_sibling 'instructions.html' }}
+    <h3>
+        Instructions Task 1 : Choices Over Risky Prospects
+    </h3>
 
     <p>
-        Please answer the following questions.
+            This is a task where you will choose between prospects with varying prizes and
+    chances of winning. You will be presented with a series of pairs of prospects where you
+    will choose one of them. There are 20 pairs in the series. For each pair of prospects, you
+    should choose the prospect you prefer to play. You will be paid based on
+    one of the tasks that you perform in this experiment today, and you will be paid
+        according to the outcome of that prospect, so you should think carefully about which prospect you prefer.
     </p>
-    {{ formfields }}
-    {{ next_button }}
+
+    <p>
+        Here is an example of what the computer display of such a pair of prospects will
+    look like.
+    </p>
+    <div >
+        <center><img style="display:block width:100% align:center" src="{{ static 'survey20/survey1.png' }}"/></center>
+    </div>
+
+
+    <p>
+            In the above example the left prospect pays five dollars ($5) if the number drawn
+    is between 1 and 40, and pays fifteen dollars ($15) if the number is between 41 and 100.
+    The blue color in the pie chart corresponds to 40% of the area and illustrates the chances
+    that the number drawn will be between 1 and 40 and your prize will be $5. The orange
+    area in the pie chart corresponds to 60% of the area and illustrates the chances that the
+    number drawn will be between 41 and 100 and your prize will be $15. When you select
+    the lottery to be played out the computer will tell you what die throws translate into what
+    prize.
+
+    </p>
+
+    <p>
+        Now look at the pie in the chart on the right. It pays five dollars ($5) if the
+    number drawn is between 1 and 50, ten dollars ($10) if the number is between 51 and 90,
+    and fifteen dollars ($15) if the number is between 91 and 100. As with the prospect on the
+    left, the pie slices represent the fraction of the possible numbers which yield each payoff.
+    For example, the size of the $15 pie slice is 10% of the total pie.
+
+    </p>
+
+
+
+    <p>
+            For instance, suppose you picked the prospect on the left in the above example. If
+    the random number was 37, you would win $5; if it was 93, you would get $15. If you
+    picked the prospect on the right and drew the number 37, you would get $5; if it was 93,
+    you would get $15.
+
+
+    </p>
+
+    <p>
+            Therefore, your payoff is determined by three things:
+        1. by which prospect you selected, the left or the right, for each of these 20 pairs;
+        2. by which prospect pair is chosen to be played out in the series of 40 such questions in total;
+        3. by the outcome of that prospect.
+    </p>
+
+
+    <p>
+            Which prospects you prefer is a matter of personal taste. The people next to you
+    may be presented with different prospects, and may have different preferences, so their
+    responses should not matter to you. Please work silently, and make your choices by
+    thinking carefully about each prospect.
+    </p>
+
+    <p>
+        Since there is a chance that any of your 20 choices could be played out for real,
+        you should approach each pair of prospects as if it is the one that you will play out.
+
+        After you have worked through all of the pairs of prospects, you will proceed to instructions for
+        round 2.
+
+    </p>
+
+    <p>
+                All payoffs are in cash, and are in addition to the $5 show-up fee that you
+        receive just for being here, as well as any other earnings in other tasks.
+
+    </p>
+</div>
+</div>
+    {{next_button}}
 
 {{ endblock }}
