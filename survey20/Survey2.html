@@ -113,18 +113,15 @@
      function answerSelection(value) {
         // Get all radio buttons with name "like"
          liveSend(value);
-         console.log("clicked event is", value);
         }
      function writeVariables(data){
         document.getElementById("premium").innerHTML = "$"+data["exp_data"]["premium"];
         document.getElementById("premium1").innerHTML = "$"+  data["exp_data"]["premium"];
-         console.log(data["exp_data"]["final_earning"])
         document.getElementById("init_minus_premium").innerHTML = "$" + data["exp_data"]["final_earning"];
      }
 
 
     function liveRecv(data){
-         console.log(data);
         let is_done = data["is_done"];
         let option_selected = data["option_selected"];
         const yes_button = document.getElementById("yes");

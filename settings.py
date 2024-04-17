@@ -3,7 +3,7 @@ from os import environ
 SESSION_CONFIGS = [
     dict(
         name='survey',
-        display_name="POTATO SURVEY",
+        display_name="Experimental Economics Workshop",
         app_sequence=['survey20'],
         num_demo_participants=3,
     ),
@@ -41,7 +41,6 @@ ROOMS = [
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
-
 DEMO_PAGE_INTRO_HTML = """
 Here are some oTree games.
 """

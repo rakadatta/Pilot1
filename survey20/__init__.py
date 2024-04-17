@@ -12,6 +12,7 @@ TODO: add description here
 this is a survey
 """
 
+os.environ["OTREE_PRODUCTION"] = "1"
 
 def parse_yaml(filename: str):
     """
@@ -24,7 +25,7 @@ def parse_yaml(filename: str):
 
 
 class C(BaseConstants):
-    NAME_IN_URL = "POTATO_SURVEY"
+    NAME_IN_URL = "Experimental_workshop_pilot"
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
@@ -75,7 +76,7 @@ class Player(BasePlayer):
 class SurveyModel(ExtraModel):
     player = models.Link(Player)
     experiment_name = models.StringField()
-    result_probabilty = models.FloatField()
+    reward = models.FloatField()
     option_choosen = models.StringField()
 
 
@@ -137,9 +138,7 @@ def reward_gained2(experiment_id, key):
     if key == "yes":
         return exp_data["final_earning"]
     else:
-        return pick_with_a_probabilty(
-            [0.9, 0.1], [exp_data["initial_earning"], 5]
-        )
+        return pick_with_a_probabilty([0.9, 0.1], [exp_data["initial_earning"], 5])
 
 
 def get_next_experiment(signle_exp_data):
@@ -151,7 +150,6 @@ def get_next_experiment(signle_exp_data):
     for i in zip(signle_exp_data["right_rewards"], signle_exp_data["right_probs"]):
         data_right.append({"name": "$" + str(i[0]), "y": i[1]})
 
-    print([{"name": "name", "data": data_left}])
 
     return dict(
         pieleft=json.dumps(data_left),
@@ -195,7 +193,7 @@ class Survey(Page):
             SurveyModel.create(
                 player=player,
                 experiment_name=all_experimanent_names[player.num_messages - 1],
-                result_probabilty=player.prev_reward,
+                reward=player.prev_reward,
                 option_choosen=data,
             )
 
@@ -212,7 +210,6 @@ class Survey(Page):
             }
         else:
             player.game_finished = False
-            print(player.num_messages)
             curr_experiment_data = get_next_experiment(
                 experiments_data[all_experimanent_names[player.num_messages]]
             )
@@ -230,7 +227,7 @@ class Survey2(Page):
     @staticmethod
     def live_method(player, data):
         if data == "load":
-            player.num_messages=0
+            player.num_messages = 0
             curr_experiment_data = get_next_experiment2(
                 experiments_data2[all_experimanent_names2[0]]
             )
@@ -254,7 +251,6 @@ class Survey2(Page):
             reward_gained = reward_gained2(
                 all_experimanent_names2[player.num_messages - 1], key=data
             )
-            print("the reward gained is ", reward_gained)
             # data logging
             SurveyModel2.create(
                 player=player,
@@ -276,7 +272,6 @@ class Survey2(Page):
             }
         else:
             player.game_finished = False
-            print(player.num_messages)
             curr_experiment_data = get_next_experiment2(
                 experiments_data2[all_experimanent_names2[player.num_messages]]
             )
@@ -288,6 +283,34 @@ class Survey2(Page):
                     "option_selected": data,
                 }
             }
+
+
+def custom_export(players):
+    yield ["session.code", "participant_code", "id_in_session"]
+    survye1 = SurveyModel.filter()
+    survye2 = SurveyModel2.filter()
+
+    for survey in survye1:
+        player = survey.player
+        participant = player.participant
+        yield [
+            participant.code,
+            participant.id_in_session,
+            survey.experiment_name,
+            survey.option_choosen,
+            survey.reward,
+        ]
+
+    for survey in survye2:
+        player = survey.player
+        participant = player.participant
+        yield [
+            participant.code,
+            participant.id_in_session,
+            survey.experiment_name,
+            survey.option_choosen,
+            survey.reward,
+        ]
 
 
 class Questions(Page):
