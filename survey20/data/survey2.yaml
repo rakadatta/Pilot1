@@ -1,138 +1,138 @@
 Experiments:
-  exp1:
+  survey2_exp1:
     premium: 0.25
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 19.75
 
-  exp2:
+  survey2_exp2:
     premium: 0.50
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 19.50
-  #change values later and do this for 20
-  exp3:
+
+  survey2_exp3:
     premium: 0.75
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 19.25
 
-  exp 4:
-    premium: 0.10
+  survey2_exp4:
+    premium: 1.00
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 19.00
     
-  exp 5:
+  survey2_exp5:
     premium: 1.25
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 18.75
     
-  exp 6:
+  survey2_exp6:
     premium: 1.50
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 18.50
     
-  exp 7:
+  survey2_exp7:
     premium: 1.75
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 18.25
     
-  exp 8:
+  survey2_exp8:
     premium: 2.00
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 18.00
     
-  exp 9:
+  survey2_exp9:
     premium: 2.25
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 17.75
     
-  exp 10:
+  survey2_exp10:
     premium: 2.50
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 17.50
     
-  exp 11:
+  survey2_exp11:
     premium: 2.75
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 17.25
     
-  exp 12:
+  survey2_exp12:
     premium: 3.00
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 17.00
     
-  exp 13:
+  survey2_exp13:
     premium: 3.25
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 16.75
     
-  exp 14:
+  survey2_exp14:
     premium: 3.50
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 16.50
     
-  exp 15:
+  survey2_exp15:
     premium: 3.75
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 16.25
     
-  exp 16:
+  survey2_exp16:
     premium: 4.00
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 16.00
     
-  exp 17:
+  survey2_exp17:
     premium: 4.25
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 15.75
     
-  exp 18:
+  survey2_exp18:
     premium: 4.50
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 15.50
     
-  exp 19:
+  survey2_exp19:
     premium: 4.75
     initial_earning: 20
     loss: 15
     loss_prob: 0.1
     final_earning: 15.25
     
-  exp 20:
+  survey2_exp20:
     premium: 5.00
     initial_earning: 20
     loss: 15

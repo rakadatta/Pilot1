@@ -1,4 +1,4 @@
-{{ block title }}Survey 2{{ endblock }}
+{{ block title }}Probabilty of Loss{{ endblock }}
 {{ block content }}
 <!-- <div style="background-color: #808080; padding: 20px;"> -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -8,10 +8,9 @@
 
 <script>
         // Function to be executed when the page is fully loaded
-        console.log("on load called")
         window.onload = function() {
             let string_ = "load" 
-            sendResultAndUpdate(string_);
+            answerSelection(string_);
         };
 </script>
 <figure class="table" style="width:100%;">
@@ -31,12 +30,16 @@
             <tr>
                 <td>
                     <p style="line-height:107%;margin-bottom:0.11in;"><span style="font-family:Times New Roman, serif;font-size:large;">
-                            <font style="font-size:14pt;"><span lang="en-US" dir="ltr">Your initial earnings are <strong>$25.00</strong>.</span></font>
+                            <font style="font-size:14pt;"><span lang="en-US" dir="ltr">Your initial
+                                    earnings are <strong>${{ group.initial_earning }}</strong>.</span></font>
                         </span></p>
                     <p style="line-height:107%;margin-bottom:0.11in;"><span style="font-family:Times New Roman, serif;font-size:large;">
-                            <font style="font-size:14pt;"><span lang="en-US" dir="ltr">When the lottery is played out, there is a <strong>10%</strong> chance that you will </span></font>
+                            <font style="font-size:14pt;"><span lang="en-US" dir="ltr">When the
+                                    lottery is played out, there is a <strong>
+                                        {{group.loss_probability}} %</strong> chance that you will
+                                    loose </span></font>
                         </span><span style="color:#ff0000;font-family:Times New Roman, serif;font-size:large;">
-                            <font style="font-size:14pt;"><span lang="en-US" dir="ltr"><strong>lose $20.00</strong></span></font>
+                            <font style="font-size:14pt;"><span lang="en-US" dir="ltr"><strong>${{group.loss}}</strong></span></font>
                         </span><span style="font-family:Times New Roman, serif;font-size:large;">
                             <font style="font-size:14pt;"><span lang="en-US" dir="ltr">. However, there is a <strong>90%</strong> chance that you will </span></font>
                         </span><span style="color:#388600;font-family:Times New Roman, serif;font-size:large;">
@@ -52,7 +55,8 @@
                         </span><span style="font-family:Times New Roman, serif;font-size:large;">
                             <font style="font-size:14pt;"><span lang="en-US" dir="ltr">, else your earnings will </span></font>
                         </span><span style="color:#388600;font-family:Times New Roman, serif;font-size:large;">
-                            <font style="font-size:14pt;"><span lang="en-US" dir="ltr"><strong>remain at $25</strong></span></font>
+                            <font style="font-size:14pt;"><span lang="en-US"
+                                                                dir="ltr"><strong>remain at ${{group.initial_earning}}</strong></span></font>
                         </span><span style="font-family:Times New Roman, serif;font-size:large;">
                             <font style="font-size:14pt;"><span lang="en-US" dir="ltr">.</span></font>
                         </span></p>
@@ -63,9 +67,9 @@
                     <ul>
                         <li>
                             <p style="line-height:107%;margin-bottom:0.11in;margin-left:0.5in;"><span style="font-family:Times New Roman, serif;font-size:large;">
-                                    <font style="font-size:14pt;"><span lang="en-US" dir="ltr">You can but the insurance at price </span></font>
+                                    <font style="font-size:14pt;"><span lang="en-US" dir="ltr">You can buy the insurance at price </span></font>
                                 </span><span style="color:#0000ff;font-family:Times New Roman, serif;font-size:large;">
-                                    <font style="font-size:14pt;"><span lang="en-US" dir="ltr"><strong>$2.25</strong></span></font>
+                                    <font style="font-size:14pt;"><strong><span lang="en-US" dir="ltr" id="premium">$2.5</span></strong></font>
                                 </span><span style="font-family:Times New Roman, serif;font-size:large;">
                                     <font style="font-size:14pt;"><span lang="en-US" dir="ltr">.</span></font>
                                 </span></p>
@@ -74,7 +78,7 @@
                             <p style="line-height:107%;margin-bottom:0.11in;margin-left:0.5in;"><span style="font-family:Times New Roman, serif;font-size:large;">
                                     <font style="font-size:14pt;"><span lang="en-US" dir="ltr">If you choose to insure against the loss, your final earnings will be </span></font>
                                 </span><span style="color:#0000ff;font-family:Times New Roman, serif;font-size:large;">
-                                    <font style="font-size:14pt;"><span lang="en-US" dir="ltr"><strong>$22.75</strong></span></font>
+                                    <font style="font-size:14pt;"> <strong><span lang="en-US" dir="ltr" id="init_minus_premium"></span></strong></font>
                                 </span><span style="font-family:Times New Roman, serif;font-size:large;">
                                     <font style="font-size:14pt;"><span lang="en-US" dir="ltr">.</span></font>
                                 </span></p>
@@ -82,140 +86,129 @@
                         </li>
                     </ul>
                     <p style="line-height:107%;margin-bottom:0.11in;" lang="en-US"><span style="font-family:Times New Roman, serif;font-size:large;">
-                            <font style="font-size:14pt;">Would you like to purchase insurance against the loss of $20.00 for $2.25? &nbsp;</font>
-                        </span></p>
+                            <font style="font-size:14pt;">Would you like to purchase insurance
+                                against the loss of <strong>${{group.loss}}</strong> for
+                                <strong><span id="premium1"></span></strong>? &nbsp;</font>
+                        </span>
+                    <form>
+                        <label style="margin-right: 20px;">
+                            <input id="yes" type="radio" name="like" onclick=answerSelection(this.value) value="yes">
+                            Yes 
+                        </label>
+                        <label>
+                            <input id="no" type="radio" name="like" value="no" onclick=answerSelection(this.value)>
+                            No
+                        </label>
+                    </form>
+                    </p>
                 </td>
             </tr>
         </tbody>
     </table>
 </figure>
 
-<p> <span id="prev_reward" style="color: blue"> Loading screen please wait....</span> </p>
+<p style="font-family:Times New Roman, serif;font-size:large;"> <span id="reward" style="color: blue"></span> </p>
 
 <script>
-    function sendResultAndUpdate(_string){
-        if(_string == "load"){
-            document.getElementById("prev_reward").innerHTML = "Loading please wait";
+     function answerSelection(value) {
+        // Get all radio buttons with name "like"
+         liveSend(value);
+         console.log("clicked event is", value);
         }
-        liveSend(_string);
-    }
+     function writeVariables(data){
+        document.getElementById("premium").innerHTML = "$"+data["exp_data"]["premium"];
+        document.getElementById("premium1").innerHTML = "$"+  data["exp_data"]["premium"];
+         console.log(data["exp_data"]["final_earning"])
+        document.getElementById("init_minus_premium").innerHTML = "$" + data["exp_data"]["final_earning"];
+     }
+
+
     function liveRecv(data){
+         console.log(data);
         let is_done = data["is_done"];
-        let exp_data = data["exp_data"];
         let option_selected = data["option_selected"];
-        const left_button = document.getElementById("left");
-        const right_button = document.getElementById("right");
-        //TODO: which button was clicked and whichreward was recieved
+        const yes_button = document.getElementById("yes");
+        const no_button = document.getElementById("no");
 
         if (option_selected != "load"){
-        document.getElementById("prev_reward").innerHTML = "You earned a reward of: $" +
-            data["prev_reward"] + " by choosing the option on the \""+  option_selected + "\"." ; 
+        document.getElementById("reward").innerHTML = "You earned a reward of: $" +
+            data["reward"] + " by choosing the option on the \""+  option_selected + "\"." ; 
         }
         if (is_done =='game_finished') {
             document.getElementById("form").submit();
         }
-        var parsed_left_chart_data = JSON.parse(exp_data["pieleft"]); 
-        var parsed_right_chart_data = JSON.parse(exp_data["pieright"]);
         if (option_selected == "load"){
-                document.getElementById("prev_reward").innerHTML = "";
-                redrawChart(parsed_left_chart_data,parsed_right_chart_data);
-                rewriteCharttext(parsed_left_chart_data,parsed_right_chart_data);
+                document.getElementById("reward").innerHTML = "";
+                writeVariables(data)
         } else{
-            left_button.disabled = true;
-            right_button.disabled = true;
+            yes_button.disabled = true;
+            no_button.disabled = true;
             setTimeout(function() {
                 //wait before update
-                document.getElementById("prev_reward").innerHTML = "";
-                redrawChart(parsed_left_chart_data,parsed_right_chart_data);
-                rewriteCharttext(parsed_left_chart_data,parsed_right_chart_data);
-                left_button.disabled = false;
-                right_button.disabled = false;
-            }, 20);
+                document.getElementById("reward").innerHTML = "";
+                writeVariables(data)
+                yes_button.disabled = false;
+                no_button.disabled = false;
+                yes_button.checked = false;
+                no_button.checked = false;
+            }, 2000);
         }
     }
 
-    function rewriteCharttext(data_field_left,data_field_right){
-        let colors = ["#2CAFFE","#544FC5","#00E272","#FE6A35"]; //change colors
-        for (let i = 0; i < 4; i++) {
-            //for now hardcode to max 4 elemetns
-            let variable_left = document.getElementById("left_text_" + i);
-            let string_field_left = "";
-            if (parseFloat(data_field_left[i]["y"]) != 0){//maybe parse 
-                variable_left.style.color = colors[i];
-                var percentage = data_field_left[i]["y"]*100
-                variable_left.innerHTML = "Chance of winnning " + data_field_left[i]["name"] + " is " + percentage.toFixed(0) + "%" ;
-            }else{
-
-                variable_left.innerHTML = "";
+    Highcharts.chart('container', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        credits: {
+            enabled: false 
+        },
+        title: {
+            text: '',
+            align: 'center'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
             }
-            let variable_right = document.getElementById("right_text_" + i);
-            if (parseFloat(data_field_right[i]["y"]) != 0){//maybe parse 
-                variable_right.style.color = colors[i];
-                var percentage = data_field_right[i]["y"]*100
-                variable_right.innerHTML = "Chance of winnning " + data_field_right[i]["name"] + " is " + percentage.toFixed(0) + "%" ;
-            }else{
-
-                variable_right.innerHTML = "";
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    distance: 0,
+                    formatter: function(){
+                        if (this.y > 0) {
+                          return this.point.name;
+                        }
+                    },
+                    connectorColor: 'rgba(128,128,128,0.5)',
+                }
             }
-        }
-    }
-
-    // Build the chart left
-        Highcharts.chart('container', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            credits: {
-                enabled: false 
-            },
-            title: {
-                text: 'Left',
-                align: 'center'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            accessibility: {
-                point: {
-                    valueSuffix: '%'
+        },
+        series: [{ name: 'Percentage',
+                   colors: ["green","red"],
+                   data: [
+                       {
+                           name: '$0',
+                           y: 90
+                       },
+                       {
+                           name: '$15',
+                           y: 10
+                       },
+                   ]
                 }
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        distance: 0,
-                        formatter: function(){
-                            if (this.y > 0) {
-                              return this.point.name;
-                            }
-                        },
-                        connectorColor: 'rgba(128,128,128,0.5)',
-                    }
-                }
-            },
-            series: [{ name: 'Percentage',
-                       colors: ["green","red"],
-                       data: [
-                           {
-                               name: '$0',
-                               y: 90
-                           },
-                           {
-                               name: '$15',
-                               y: 10
-                           },
-                       ]
-                    }
-                ]
-        });
+            ]
+    });
 
-        // Build the chart right
 </script>
 
 {{ endblock }}

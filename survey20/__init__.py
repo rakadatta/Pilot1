@@ -1,7 +1,7 @@
 import json
 import os
 import random
-from typing import List
+from typing import List, final
 
 import otree
 import yaml
@@ -34,29 +34,55 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
+    loss = models.IntegerField(initial=15)
+    loss_probability = models.IntegerField(initial=10)
+    initial_earning = models.IntegerField(initial=20)
     pass
 
 
-#  def make_experiment_data(exp_name,result_name,clicked_name):
-#  exp_name = models.StringField()
-#  result_name = models.CurrencyField(initial=0)
-
-
 class Player(BasePlayer):
-    name = models.StringField(label="Please enter your name")
-    age = models.IntegerField(label="What is your age?", min=13, max=125)
-    accumulated_sum = models.CurrencyField(initial=0, doc="value accumulated so far")
+    age = models.IntegerField(label="Please enter your age?", min=13, max=125)
+    gpa = models.FloatField(label="Please enter your current GPA?", min=0, max=4)
+    family_income = models.CurrencyField(
+        label="Please enter your gross family income (monthly/annual)"
+    )
+    birth_order = models.IntegerField(
+        label=f"What is your birth order? \t (If your parents have 6 children and you have two elder siblings and three younger siblings, you were the 'third' kid your parents had and your birth order is 3)",
+        min=1,
+        max=15,
+    )
+
+    etnicity = models.StringField(
+        label="Which ethnicity best describes you?",
+        widget=widgets.RadioSelect,
+        choices=[
+            "American",
+            "African American",
+            "African",
+            "Asian",
+            "Hispanic",
+            "Latin American",
+            "Others",
+        ],
+    )
+
     prev_reward = models.CurrencyField(initial=0, doc="value accumulated so far")
     num_messages = models.IntegerField(initial=0)
     game_finished = models.BooleanField()
+    premium = models.CurrencyField(initial="0")
 
-    ##to log the data
 
-
-class Survey1(ExtraModel):
+class SurveyModel(ExtraModel):
     player = models.Link(Player)
     experiment_name = models.StringField()
     result_probabilty = models.FloatField()
+    option_choosen = models.StringField()
+
+
+class SurveyModel2(ExtraModel):
+    player = models.Link(Player)
+    experiment_name = models.StringField()
+    reward = models.FloatField()
     option_choosen = models.StringField()
 
 
@@ -80,18 +106,6 @@ def pick_with_a_probabilty(probabilities: List, rewards: List):
     return chosen_value
 
 
-def reward_gained(experiment_id, key):
-    exp_data = experiments_data[experiment_id]
-    if key == "left":
-        probs = "left_probs"
-        rewards = "left_rewards"
-        return pick_with_a_probabilty(exp_data[probs], exp_data[rewards])
-    if key == "right":
-        probs = "right_probs"
-        rewards = "right_rewards"
-        return pick_with_a_probabilty(exp_data[probs], exp_data[rewards])
-
-
 # TODO: maybe move to initial one
 dat_filename = os.path.dirname(__file__) + "/data/survey1.yaml"
 dat2_filename = os.path.dirname(__file__) + "/data/survey2.yaml"
@@ -104,6 +118,28 @@ all_experimanent_names2 = [exp for exp in experiments_data2]
 # to eandomize the Experiments
 random.shuffle(all_experimanent_names)
 random.shuffle(all_experimanent_names2)
+
+
+def reward_gained(experiment_id, key):
+    exp_data = experiments_data[experiment_id]
+    if key == "left":
+        probs = "left_probs"
+        rewards = "left_rewards"
+        return pick_with_a_probabilty(exp_data[probs], exp_data[rewards])
+    if key == "right":
+        probs = "right_probs"
+        rewards = "right_rewards"
+        return pick_with_a_probabilty(exp_data[probs], exp_data[rewards])
+
+
+def reward_gained2(experiment_id, key):
+    exp_data = experiments_data2[experiment_id]
+    if key == "yes":
+        return exp_data["final_earning"]
+    else:
+        return pick_with_a_probabilty(
+            [0.9, 0.1], [exp_data["initial_earning"], 5]
+        )
 
 
 def get_next_experiment(signle_exp_data):
@@ -125,11 +161,8 @@ def get_next_experiment(signle_exp_data):
 
 def get_next_experiment2(signle_exp_data):
     return dict(
-        premium=json.dumps(signle_exp_data["premium"]),
-        initial_earning=json.dumps(signle_exp_data["initial_earning"]),
-        loss=json.dumps(signle_exp_data["loss"]),
-        loss_prob=json.dumps(signle_exp_data["loss_prob"]),
-        loss_earning=json.dumps(signle_exp_data["final_earning"]),
+        premium=signle_exp_data["premium"],
+        final_earning=signle_exp_data["final_earning"],
     )
 
 
@@ -144,7 +177,7 @@ class Survey(Page):
                 0: {
                     "is_done": "not_game_finished",
                     "exp_data": curr_experiment_data,
-                    "prev_reward": player.prev_reward,
+                    "prev_reward": 0,
                     "option_selected": data,
                 }
             }
@@ -158,9 +191,8 @@ class Survey(Page):
             player.prev_reward = reward_gained(
                 all_experimanent_names[player.num_messages - 1], key=data
             )
-            player.accumulated_sum += player.prev_reward
             # data logging
-            Survey1.create(
+            SurveyModel.create(
                 player=player,
                 experiment_name=all_experimanent_names[player.num_messages - 1],
                 result_probabilty=player.prev_reward,
@@ -193,18 +225,21 @@ class Survey(Page):
                 }
             }
 
+
 class Survey2(Page):
     @staticmethod
     def live_method(player, data):
-        # we send empty at the beginning
         if data == "load":
-            curr_experiment_data = get_next_experiment(experiments_data[all_experimanent_names[0]])
+            player.num_messages=0
+            curr_experiment_data = get_next_experiment2(
+                experiments_data2[all_experimanent_names2[0]]
+            )
             # we send empty at the beginning
             return {
                 0: {
                     "is_done": "not_game_finished",
                     "exp_data": curr_experiment_data,
-                    "prev_reward": player.prev_reward,
+                    "reward": 0,
                     "option_selected": data,
                 }
             }
@@ -214,16 +249,17 @@ class Survey2(Page):
 
         #  result_probabilty = models.FloatField()
         #  option_choosen = models.StringField()
+        reward_gained = 0
         try:
-            player.prev_reward = reward_gained(
-                all_experimanent_names[player.num_messages - 1], key=data
+            reward_gained = reward_gained2(
+                all_experimanent_names2[player.num_messages - 1], key=data
             )
-            player.accumulated_sum += player.prev_reward
+            print("the reward gained is ", reward_gained)
             # data logging
-            Survey1.create(
+            SurveyModel2.create(
                 player=player,
-                experiment_name=all_experimanent_names[player.num_messages - 1],
-                result_probabilty=player.prev_reward,
+                experiment_name=all_experimanent_names2[player.num_messages - 1],
+                reward=reward_gained,
                 option_choosen=data,
             )
 
@@ -234,39 +270,35 @@ class Survey2(Page):
             return {
                 0: {
                     "is_done": "game_finished",
-                    "prev_reward": player.prev_reward,
+                    "reward": reward_gained,
                     "option_selected": data,
                 }
             }
         else:
             player.game_finished = False
             print(player.num_messages)
-            curr_experiment_data = get_next_experiment(
-                experiments_data[all_experimanent_names[player.num_messages]]
+            curr_experiment_data = get_next_experiment2(
+                experiments_data2[all_experimanent_names2[player.num_messages]]
             )
             return {
                 0: {
                     "is_done": "not_game_finished",
                     "exp_data": curr_experiment_data,
-                    "prev_reward": player.prev_reward,
+                    "reward": reward_gained,
                     "option_selected": data,
                 }
             }
 
 
-class thanks(Page):
+class Questions(Page):
     form_model = "player"
-    form_fileds = ["accumulated_sum"]
+    form_fields = ["age", "gpa", "family_income", "etnicity", "birth_order"]
     pass
 
 
-#  class Results(Page):
-#  @staticmethod
-#  def vars_for_template(player: Player):
-#  group = player.group
-
-#  return dict(is_greedy=group.item_value - player.bid_amount < 0)
+class thanks(Page):
+    pass
 
 
-page_sequence = [Introduction, Survey, Introduction2, thanks]
-#  page_sequence = [Survey, thanks]
+page_sequence = [Introduction, Survey, Introduction2, Survey2, Questions, thanks]
+# page_sequence = [ Survey2, Questions, thanks]
