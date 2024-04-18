@@ -172,7 +172,7 @@ class Survey(Page):
             curr_experiment_data = get_next_experiment(experiments_data[all_experimanent_names[0]])
             # we send empty at the beginning
             return {
-                0: {
+                player.id_in_group: {
                     "is_done": "not_game_finished",
                     "exp_data": curr_experiment_data,
                     "prev_reward": 0,
@@ -202,7 +202,7 @@ class Survey(Page):
 
         if player.num_messages >= max_num_messages:
             return {
-                0: {
+                player.id_in_group: {
                     "is_done": "game_finished",
                     "prev_reward": player.prev_reward,
                     "option_selected": data,
@@ -214,7 +214,7 @@ class Survey(Page):
                 experiments_data[all_experimanent_names[player.num_messages]]
             )
             return {
-                0: {
+                player.id_in_group: {
                     "is_done": "not_game_finished",
                     "exp_data": curr_experiment_data,
                     "prev_reward": player.prev_reward,

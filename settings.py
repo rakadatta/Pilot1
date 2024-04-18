@@ -5,7 +5,7 @@ SESSION_CONFIGS = [
         name='survey',
         display_name="Experimental Economics Workshop",
         app_sequence=['survey20'],
-        num_demo_participants=3,
+        num_demo_participants=1,
     ),
 ]
 
