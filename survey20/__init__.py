@@ -233,7 +233,7 @@ class Survey2(Page):
             )
             # we send empty at the beginning
             return {
-                0: {
+                player.id_in_group: {
                     "is_done": "not_game_finished",
                     "exp_data": curr_experiment_data,
                     "reward": 0,
@@ -264,7 +264,7 @@ class Survey2(Page):
 
         if player.num_messages >= max_num_messages:
             return {
-                0: {
+                player.id_in_group: {
                     "is_done": "game_finished",
                     "reward": reward_gained,
                     "option_selected": data,
@@ -276,7 +276,7 @@ class Survey2(Page):
                 experiments_data2[all_experimanent_names2[player.num_messages]]
             )
             return {
-                0: {
+                player.id_in_group: {
                     "is_done": "not_game_finished",
                     "exp_data": curr_experiment_data,
                     "reward": reward_gained,
